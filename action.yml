@@ -120,7 +120,7 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: pip install requests
+      run: pip install -r ./requirements.txt
 
     - name: Merge local and remote appfilter files
       shell: bash
