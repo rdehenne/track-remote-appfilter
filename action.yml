@@ -1,0 +1,148 @@
+name: 'Create Pull Request'
+description: 'Creates a pull request for changes to your repository in the actions workspace'
+inputs:
+  local-appfilter:
+    description: 'The path to the local appfilter.xml file that needs to be updated.'
+    default: 'newicons/appfilter.xml'
+  remote-appfilter:
+    description: 'The URL to the remote appfilter.xml used for comparison.'
+    default: 'https://raw.githubusercontent.com/Arcticons-Team/Arcticons/refs/heads/main/newicons/appfilter.xml'
+  branch:
+    description: 'The pull request branch name.'
+    default: 'action/remote-appfilter'
+  commit-message:
+    description: 'The message to use when committing changes.'
+    default: '[remote-appfilter] Add appfilter items'
+  title:
+    description: 'The title of the pull request.'
+    default: '[remote-appfilter] Add appfilter items'
+  body:
+    description: 'The body of the pull request.'
+    default: |
+      This PR adds new appfilter items from a remote appfilter.xml file that could be matched to existing drawables.
+
+  Automated changes by the [action-remote-appfilter](https://github.com/rdehenne/action-remote-appfilter) GitHub action.
+  delete-branch:
+    description: >
+      Delete the `branch` if it doesn't have an active pull request associated with it.
+    default: true
+
+  # -- Next inputs are directly forwarded to the Create Pull Request action --
+  token:
+    description: 'The token that the action will use to create and update the pull request.'
+    default: ${{ github.token }}
+  branch-token:
+    description: >
+      The token that the action will use to create and update the branch.
+      Defaults to the value of `token`.
+  path:
+    description: >
+      Relative path under $GITHUB_WORKSPACE to the repository.
+      Defaults to $GITHUB_WORKSPACE.
+  committer:
+    description: >
+      The committer name and email address in the format `Display Name <email@address.com>`.
+      Defaults to the GitHub Actions bot user.
+    default: 'github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>'
+  author:
+    description: >
+      The author name and email address in the format `Display Name <email@address.com>`.
+      Defaults to the user who triggered the workflow run.
+    default: '${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>'
+  signoff:
+    description: 'Add `Signed-off-by` line by the committer at the end of the commit log message.'
+    default: false
+  branch-suffix:
+    description: 'The branch suffix type when using the alternative branching strategy.'
+  base:
+    description: >
+      The pull request base branch.
+      Defaults to the branch checked out in the workflow.
+  push-to-fork:
+    description: >
+      A fork of the checked out parent repository to which the pull request branch will be pushed.
+      e.g. `owner/repo-fork`.
+      The pull request will be created to merge the fork's branch into the parent's base.
+  sign-commits:
+    description: 'Sign commits as `github-actions[bot]` when using `GITHUB_TOKEN`, or your own bot when using GitHub App tokens.'
+    default: false
+  body-path:
+    description: 'The path to a file containing the pull request body. Takes precedence over `body`.'
+  labels:
+    description: 'A comma or newline separated list of labels.'
+  assignees:
+    description: 'A comma or newline separated list of assignees (GitHub usernames).'
+  reviewers:
+    description: 'A comma or newline separated list of reviewers (GitHub usernames) to request a review from.'
+  team-reviewers:
+    description: >
+      A comma or newline separated list of GitHub teams to request a review from.
+      Note that a `repo` scoped Personal Access Token (PAT) may be required.
+  milestone:
+    description: 'The number of the milestone to associate the pull request with.'
+  draft:
+    description: >
+      Create a draft pull request.
+      Valid values are `true` (only on create), `always-true` (on create and update), and `false`.
+    default: false
+  maintainer-can-modify:
+    description: 'Indicates whether maintainers can modify the pull request.'
+    default: true
+outputs:
+  pull-request-number:
+    description: 'The pull request number'
+  pull-request-url:
+    description: 'The URL of the pull request.'
+  pull-request-operation:
+    description: 'The pull request operation performed by the action, `created`, `updated` or `closed`.'
+  pull-request-head-sha:
+    description: 'The commit SHA of the pull request branch.'
+  pull-request-branch:
+    description: 'The pull request branch name'
+branding:
+  icon: 'image'
+  color: 'red'
+jobs:
+  merge_remote_appfilter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          cache: 'pip'
+      - run: pip install -r ./requirements.txt
+
+      - name: Merge local and remote appfilter files
+        run: python ./merge_remote_appfilter.py ${{ inputs.local-appfilter }} ${{ inputs.remote-appfilter }}
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: ${{ inputs.branch }
+          commit-message: ${{ inputs.commit-message }}
+          title: ${{ inputs.title }}
+          body: ${{ inputs.body }}
+          delete-branch: ${{ inputs.delete-branch }}
+          token: ${{ inputs.token }}
+          branch-token: ${{ inputs.branch-token }}
+          path: ${{ inputs.path }}
+          committer: ${{ inputs.committer }}
+          author: ${{ inputs.author }}
+          delete-branch: ${{ inputs.delete-branch }}
+          branch-suffix: ${{ inputs.branch-suffix }}
+          base: ${{ inputs.base }}
+          push-to-fork: ${{ inputs.push-to-fork }}
+          sign-commits: ${{ inputs.sign-commits }}
+          body-path: ${{ inputs.body-path }}
+          labels: ${{ inputs.labels }}
+          assignees: ${{ inputs.assignees }}
+          reviewers: ${{ inputs.reviewers }}
+          team-reviewers: ${{ inputs.team-reviewers }}
+          milestone: ${{ inputs.milestone }}
+          draft: ${{ inputs.draft }}
+          maintainer-can-modify: ${{ inputs.maintainer-can-modify }}
+
