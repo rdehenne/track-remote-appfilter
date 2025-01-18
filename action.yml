@@ -125,7 +125,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
-          branch: ${{ inputs.branch }
+          branch: ${{ inputs.branch }}
           commit-message: ${{ inputs.commit-message }}
           title: ${{ inputs.title }}
           body: ${{ inputs.body }}
