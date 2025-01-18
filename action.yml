@@ -120,11 +120,11 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: pip install -r ./requirements.txt
+      run: pip install -r ${{ github.action_path }}/requirements.txt
 
     - name: Merge local and remote appfilter files
       shell: bash
-      run: python ./merge_remote_appfilter.py ${{ inputs.local-appfilter }} ${{ inputs.remote-appfilter }}
+      run: python ${{ github.action_path }}/merge_remote_appfilter.py ${{ inputs.local-appfilter }} ${{ inputs.remote-appfilter }}
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
