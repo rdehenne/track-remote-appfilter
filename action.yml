@@ -1,5 +1,5 @@
-name: 'Create Pull Request'
-description: 'Creates a pull request for changes to your repository in the actions workspace'
+name: 'Merge Remote Appfilter'
+description: 'Track changes of a remote appfilter.xml to update your own appfilter.xml.'
 inputs:
   local-appfilter:
     description: 'The path to the local appfilter.xml file that needs to be updated.'
