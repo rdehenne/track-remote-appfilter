@@ -1,5 +1,10 @@
 name: 'Track Remote Appfilter'
 description: 'Track changes of a remote appfilter.xml to update your own appfilter.xml.'
+
+branding:
+  icon: 'image'
+  color: 'purple'
+
 inputs:
   local-appfilter:
     description: 'The path to the local appfilter.xml file that needs to be updated.'
@@ -102,50 +107,49 @@ outputs:
     description: 'The commit SHA of the pull request branch.'
   pull-request-branch:
     description: 'The pull request branch name'
-branding:
-  icon: 'image'
-  color: 'red'
-jobs:
+
+runs:
+  using: "composite"
   merge_remote_appfilter:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    - name: Check out repository
+      uses: actions/checkout@v4
       
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-          cache: 'pip'
-      - run: pip install -r ./requirements.txt
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+        cache: 'pip'
 
-      - name: Merge local and remote appfilter files
-        run: python ./merge_remote_appfilter.py ${{ inputs.local-appfilter }} ${{ inputs.remote-appfilter }}
+    - name: Install dependencies
+      run: pip install -r ./requirements.txt
 
-      - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v7
-        with:
-          branch: ${{ inputs.branch }}
-          commit-message: ${{ inputs.commit-message }}
-          title: ${{ inputs.title }}
-          body: ${{ inputs.body }}
-          delete-branch: ${{ inputs.delete-branch }}
-          token: ${{ inputs.token }}
-          branch-token: ${{ inputs.branch-token }}
-          path: ${{ inputs.path }}
-          committer: ${{ inputs.committer }}
-          author: ${{ inputs.author }}
-          delete-branch: ${{ inputs.delete-branch }}
-          branch-suffix: ${{ inputs.branch-suffix }}
-          base: ${{ inputs.base }}
-          push-to-fork: ${{ inputs.push-to-fork }}
-          sign-commits: ${{ inputs.sign-commits }}
-          body-path: ${{ inputs.body-path }}
-          labels: ${{ inputs.labels }}
-          assignees: ${{ inputs.assignees }}
-          reviewers: ${{ inputs.reviewers }}
-          team-reviewers: ${{ inputs.team-reviewers }}
-          milestone: ${{ inputs.milestone }}
-          draft: ${{ inputs.draft }}
-          maintainer-can-modify: ${{ inputs.maintainer-can-modify }}
+    - name: Merge local and remote appfilter files
+      run: python ./merge_remote_appfilter.py ${{ inputs.local-appfilter }} ${{ inputs.remote-appfilter }}
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v7
+      with:
+        branch: ${{ inputs.branch }}
+        commit-message: ${{ inputs.commit-message }}
+        title: ${{ inputs.title }}
+        body: ${{ inputs.body }}
+        delete-branch: ${{ inputs.delete-branch }}
+        token: ${{ inputs.token }}
+        branch-token: ${{ inputs.branch-token }}
+        path: ${{ inputs.path }}
+        committer: ${{ inputs.committer }}
+        author: ${{ inputs.author }}
+        delete-branch: ${{ inputs.delete-branch }}
+        branch-suffix: ${{ inputs.branch-suffix }}
+        base: ${{ inputs.base }}
+        push-to-fork: ${{ inputs.push-to-fork }}
+        sign-commits: ${{ inputs.sign-commits }}
+        body-path: ${{ inputs.body-path }}
+        labels: ${{ inputs.labels }}
+        assignees: ${{ inputs.assignees }}
+        reviewers: ${{ inputs.reviewers }}
+        team-reviewers: ${{ inputs.team-reviewers }}
+        milestone: ${{ inputs.milestone }}
+        draft: ${{ inputs.draft }}
+        maintainer-can-modify: ${{ inputs.maintainer-can-modify }}
 
