@@ -1,4 +1,4 @@
-name: 'Merge Remote Appfilter'
+name: 'Track Remote Appfilter'
 description: 'Track changes of a remote appfilter.xml to update your own appfilter.xml.'
 inputs:
   local-appfilter:
@@ -9,19 +9,19 @@ inputs:
     default: 'https://raw.githubusercontent.com/Arcticons-Team/Arcticons/refs/heads/main/newicons/appfilter.xml'
   branch:
     description: 'The pull request branch name.'
-    default: 'action/remote-appfilter'
+    default: 'action/track-remote-appfilter'
   commit-message:
     description: 'The message to use when committing changes.'
-    default: '[remote-appfilter] Add appfilter items'
+    default: '[track-remote-appfilter] Add appfilter items'
   title:
     description: 'The title of the pull request.'
-    default: '[remote-appfilter] Add appfilter items'
+    default: '[track-remote-appfilter] Add appfilter items'
   body:
     description: 'The body of the pull request.'
     default: |
       This PR adds new appfilter items from a remote appfilter.xml file that could be matched to existing drawables.
 
-  Automated changes by the [action-remote-appfilter](https://github.com/rdehenne/action-remote-appfilter) GitHub action.
+      Automated changes by the [Track Remote Appfilter](https://github.com/rdehenne/track-remote-appfilter) GitHub action.
   delete-branch:
     description: >
       Delete the `branch` if it doesn't have an active pull request associated with it.
