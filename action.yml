@@ -111,7 +111,7 @@ runs:
   steps:
     - name: Check out repository
       uses: actions/checkout@v4
-      
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
@@ -151,4 +151,3 @@ runs:
         milestone: ${{ inputs.milestone }}
         draft: ${{ inputs.draft }}
         maintainer-can-modify: ${{ inputs.maintainer-can-modify }}
-
