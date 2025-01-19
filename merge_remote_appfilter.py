@@ -45,6 +45,7 @@ import sys
 
 from os import PathLike
 from dataclasses import dataclass
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +62,7 @@ ITEM_REGEX_IGNORE_DEFAULT = re.compile(
 APPFILTER_INDENT = "\t"
 
 
-def to_local_component_drawables(path: PathLike | str) -> dict[str, str]:
+def to_local_component_drawables(path: PathLike[Any] | str) -> dict[str, str]:
     """
     Parse appfilter items from `path` into a
     `{component: drawable}` dictionary.
@@ -88,7 +89,7 @@ class AppFilterItem:
     component: str
     drawable: str
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'<item component="{self.component}" drawable="{self.drawable}"/>'
 
 
@@ -187,7 +188,7 @@ def generate_missing_items(remote_comparison: RemoteComparison) -> dict[str, lis
     return local_drawable_to_components
 
 
-def write_insert_appfilter(input_local_path: PathLike | str, output_path: PathLike | str, drawable_to_components: dict[str, list[str]]):
+def write_insert_appfilter(input_local_path: PathLike[Any] | str, output_path: PathLike[Any] | str, drawable_to_components: dict[str, list[str]]) -> None:
     """
     Insert new components into the appfilter file, right after the last `<item>`
     that uses the same drawable.
