@@ -8,10 +8,10 @@ branding:
 inputs:
   local-appfilter:
     description: 'The path to the local appfilter.xml file that needs to be updated.'
-    default: 'newicons/appfilter.xml'
+    required: true
   remote-appfilter:
     description: 'The URL to the remote appfilter.xml used for comparison.'
-    default: 'https://raw.githubusercontent.com/Arcticons-Team/Arcticons/refs/heads/main/newicons/appfilter.xml'
+    required: true
   branch:
     description: 'The pull request branch name.'
     default: 'action/track-remote-appfilter'
