@@ -47,7 +47,7 @@ Other inputs are optional and come from the [Create Pull Request action](https:/
 | `remote-appfilter`  | The URL to the remote appfilter.xml you want to track[^1]  | **Required** |
 | `commit-message`    | The message to use when committing changes. See [commit-message](https://github.com/peter-evans/create-pull-request#commit-message). | `[track-remote-appfilter] Add appfilter items` |
 | `title`             | The title of the pull request.                             | `[track-remote-appfilter] Add appfilter items` |
-| `body`              | The body of the pull request.                              | This PR adds new appfilter items from a remote appfilter.xml file that could be matched to existing drawables. Automated changes by the Track Remote Appfilter GitHub action. |
+| `body`              | The body of the pull request.                              | `This PR adds new appfilter items from a remote appfilter.xml file that could be matched to existing drawables. Automated changes by the Track Remote Appfilter GitHub action.` |
 
 You can pass any other input used by the Create Pull Request action. Check out [their documentation](https://github.com/peter-evans/create-pull-request) for the full list of inputs available.
 
