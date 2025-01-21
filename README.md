@@ -7,7 +7,7 @@ This action is suitable for open source Android icon packs.
 
 ## Usage
 
-The recommended way of using this action is through periodic jobs, so that you get notified when the remote `appfilter.xml` changes.
+The recommended way of using this action is through periodic jobs, so that you get notified when the remote `appfilter.xml` changes. Note that GitHub only runs scheduled jobs on the default branch.
 
 In `.github/workflows`, create a new workflow file, e.g. `action-remote-appfilter.yml`.
 Below is a sample workflow file that tracks [Arcticons'](https://github.com/Arcticons-Team/Arcticons/) `appfilter.xml` file:
@@ -17,7 +17,7 @@ name: Update appfilter from Arcticons
 
 on:
   schedule:
-    - cron: '37 15 * * *' # Triggers once a day at 3:37PM GMT, see https://crontab.guru/ for help
+    - cron: '37 15 * * *' # Triggers once a day at 3:37PM GMT on the default branch, see https://crontab.guru/ for help
 
 jobs:
   track-remote-appfilter:
